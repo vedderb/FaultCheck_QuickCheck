@@ -1,0 +1,180 @@
+\section{The FaultCheck distribution with a QuickCheck
+example}\label{the-faultcheck-distribution-with-a-quickcheck-example}
+
+\section{Scripts}\label{scripts}
+
+This distribution contains several scripts to automate certain tasks.
+Their purpose is as follows:
+
+\subsection{Directory: /}\label{directory}
+
+\textbf{set\_env}\\Set up the environment for running FaultCheck and the
+examples where the dynamic libraries are looked up and the includes are
+resolved.
+
+\textbf{build}\\Compiles FaultCheck and the C files for the example(s).
+
+\textbf{build\_doc}\\Generates the documentation from the README.md
+markup file. The output appears in the \emph{Documentation} directory.
+
+\textbf{clean}\\Removes the object files from the build process.
+
+\subsection{Directory:
+/Examples/AUTOSAR\_E2E\_QuickCheck}\label{directory-examplesautosarux5fe2eux5fquickcheck}
+
+\textbf{gen\_coverage}\\Generate C code coverage reports in HTML and in
+LaTeX if gentex is installed.
+
+\textbf{clean\_coverage}\\Remove the coverage files.
+
+\section{Installing dependencies}\label{installing-dependencies}
+
+In order to run this software, make sure that all libraries that are
+required are installed. For FaultCheck itself, the Qt SDK is required
+and for the examples the GNU C compiler is required. For the FaultCheck
+tests, the sbt tool is required. To generate the coverage reports and
+the documentation, some additional tools are required. For the
+QuickCheck example, an erlang installation with QuickCheck is required.
+
+\subsection{Ubuntu Linux}\label{ubuntu-linux}
+
+Setting everything up on a fresh Ubuntu install is fairly simple. First,
+install some dependencies:
+
+\begin{quote}
+sudo apt-get install build-essential qt-sdk
+\end{quote}
+
+\textbf{QuickCheck Example}\\For the QuickCheck example to run, install
+Erlang and QuickCheck as usual.
+
+\textbf{Coverage information}\\To generate coverage information with the
+provided script for the examples, install lcov 1.10 or later. On Ubuntu
+14.04, the version from the repositories can be used:
+
+\begin{quote}
+sudo apt-get install lcov
+\end{quote}
+
+For earlier versions of Ubuntu, download and install an updated version
+of lcov from
+here:\\\url{http://packages.ubuntu.com/trusty/all/lcov/download}
+
+If you would like to have LaTeX output from lcov, download gentex from
+here:\\\url{https://github.com/jarikomppa/lcov-latex}
+
+\textbf{ScalaCheck tests}\\For the ScalaCheck tests, install scala,
+openjdk and sbt:
+
+\begin{quote}
+wget http://apt.typesafe.com/repo-deb-build-0002.deb\\sudo dpkg -i
+repo-deb-build-0002.deb\\sudo apt-get update\\sudo apt-get install sbt
+scala openjdk-7-jdk
+\end{quote}
+
+\textbf{Documentation}\\To generate LaTeX, PDF and HTML documentation
+from the markdown file, install pandoc:
+
+\begin{quote}
+sudo apt-get install pandoc texlive-latex-base cm-super
+\end{quote}
+
+\section{Setting up the environment}\label{setting-up-the-environment}
+
+From the root directory, set up the environment with the provided script
+(note that source has to be used to run the script in the current
+shell):
+
+\begin{quote}
+source set\_env
+\end{quote}
+
+Build everything:
+
+\begin{quote}
+./build
+\end{quote}
+
+At this point, the QuickCheck example and the functionality tests should
+work from the current shell. Note that the environment has to be set
+with the source command every time a new shell is started.
+
+\section{Running the QuickCheck
+example}\label{running-the-quickcheck-example}
+
+If the AUTOSAR example is downloaded and present in the examples
+directory, go to \emph{Examples/AUTOSAR\_E2E\_QuickCheck} and start
+erlang:
+
+\begin{quote}
+erl
+\end{quote}
+
+Compile and run the example from the erlang shell:
+
+\begin{quote}
+c(airbag\_eqc).\\airbag\_eqc:test(1000).
+\end{quote}
+
+You should see lots of dots and explosion commands printed. In order to
+switch the E2E-library on and off, change the following define in
+\emph{airbag\_eqc.erl}:
+
+\begin{quote}
+-define(USE\_E2E, yes).
+\end{quote}
+
+When the E2E-library is not used, a large enough number of tests should
+reveal a failing test case or two.
+
+\section{Generation code coverage
+information}\label{generation-code-coverage-information}
+
+The \emph{gen\_coverage} script in the example can be used to generate
+coverage information in the \emph{Coverage} directory. This can only be
+done after the experiment has been run.
+
+\section{Testing FaultCheck}\label{testing-faultcheck}
+
+There are some property-based tests that can be used to verify that
+FaultCheck works as intended. These tests are implemented in ScalaCheck.
+When new features are added to FaultCheck, these tests should be updated
+and/or re-run. Currently, there are two different tests: one for the
+probing-part of FaultCheck and one for the packet-based communication
+channel of FaultCheck. For these tests to work, everything has to be
+built and the environment has to be set up as described above.
+
+\subsection{Testing the probing part}\label{testing-the-probing-part}
+
+Go to \emph{Tests/General} and run the test with
+
+\begin{quote}
+sbt run
+\end{quote}
+
+All the tests should pass.
+
+\subsection{Testing the communication
+channel}\label{testing-the-communication-channel}
+
+Go to \emph{Tests/Packet} and run the test with
+
+\begin{quote}
+sbt run
+\end{quote}
+
+All the tests should pass.
+
+\section{Generating documentation}\label{generating-documentation}
+
+Currently, this tutorial is written with the markdown syntax in the
+\emph{README.md} file and the files in the Documentation directory are
+generated with the \emph{build\_doc} script. To update the
+documentation, edit the \emph{README.md} file and run the script:
+
+\begin{quote}
+./build\_doc
+\end{quote}
+
+Make sure that the dependencies for this script are installed as
+described above.

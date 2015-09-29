@@ -1,0 +1,79 @@
+<h1 id="the-faultcheck-distribution-with-a-quickcheck-example">The FaultCheck distribution with a QuickCheck example</h1>
+<h1 id="scripts">Scripts</h1>
+<p>This distribution contains several scripts to automate certain tasks. Their purpose is as follows:</p>
+<h2 id="directory">Directory: /</h2>
+<p><strong>set_env</strong><br />Set up the environment for running FaultCheck and the examples where the dynamic libraries are looked up and the includes are resolved.</p>
+<p><strong>build</strong><br />Compiles FaultCheck and the C files for the example(s).</p>
+<p><strong>build_doc</strong><br />Generates the documentation from the README.md markup file. The output appears in the <em>Documentation</em> directory.</p>
+<p><strong>clean</strong><br />Removes the object files from the build process.</p>
+<h2 id="directory-examplesautosar_e2e_quickcheck">Directory: /Examples/AUTOSAR_E2E_QuickCheck</h2>
+<p><strong>gen_coverage</strong><br />Generate C code coverage reports in HTML and in LaTeX if gentex is installed.</p>
+<p><strong>clean_coverage</strong><br />Remove the coverage files.</p>
+<h1 id="installing-dependencies">Installing dependencies</h1>
+<p>In order to run this software, make sure that all libraries that are required are installed. For FaultCheck itself, the Qt SDK is required and for the examples the GNU C compiler is required. For the FaultCheck tests, the sbt tool is required. To generate the coverage reports and the documentation, some additional tools are required. For the QuickCheck example, an erlang installation with QuickCheck is required.</p>
+<h2 id="ubuntu-linux">Ubuntu Linux</h2>
+<p>Setting everything up on a fresh Ubuntu install is fairly simple. First, install some dependencies:</p>
+<blockquote>
+<p>sudo apt-get install build-essential qt-sdk</p>
+</blockquote>
+<p><strong>QuickCheck Example</strong><br />For the QuickCheck example to run, install Erlang and QuickCheck as usual.</p>
+<p><strong>Coverage information</strong><br />To generate coverage information with the provided script for the examples, install lcov 1.10 or later. On Ubuntu 14.04, the version from the repositories can be used:</p>
+<blockquote>
+<p>sudo apt-get install lcov</p>
+</blockquote>
+<p>For earlier versions of Ubuntu, download and install an updated version of lcov from here:<br /><a href="http://packages.ubuntu.com/trusty/all/lcov/download">http://packages.ubuntu.com/trusty/all/lcov/download</a></p>
+<p>If you would like to have LaTeX output from lcov, download gentex from here:<br /><a href="https://github.com/jarikomppa/lcov-latex">https://github.com/jarikomppa/lcov-latex</a></p>
+<p><strong>ScalaCheck tests</strong><br />For the ScalaCheck tests, install scala, openjdk and sbt:</p>
+<blockquote>
+<p>wget http://apt.typesafe.com/repo-deb-build-0002.deb<br />sudo dpkg -i repo-deb-build-0002.deb<br />sudo apt-get update<br />sudo apt-get install sbt scala openjdk-7-jdk</p>
+</blockquote>
+<p><strong>Documentation</strong><br />To generate LaTeX, PDF and HTML documentation from the markdown file, install pandoc:</p>
+<blockquote>
+<p>sudo apt-get install pandoc texlive-latex-base cm-super</p>
+</blockquote>
+<h1 id="setting-up-the-environment">Setting up the environment</h1>
+<p>From the root directory, set up the environment with the provided script (note that source has to be used to run the script in the current shell):</p>
+<blockquote>
+<p>source set_env</p>
+</blockquote>
+<p>Build everything:</p>
+<blockquote>
+<p>./build</p>
+</blockquote>
+<p>At this point, the QuickCheck example and the functionality tests should work from the current shell. Note that the environment has to be set with the source command every time a new shell is started.</p>
+<h1 id="running-the-quickcheck-example">Running the QuickCheck example</h1>
+<p>If the AUTOSAR example is downloaded and present in the examples directory, go to <em>Examples/AUTOSAR_E2E_QuickCheck</em> and start erlang:</p>
+<blockquote>
+<p>erl</p>
+</blockquote>
+<p>Compile and run the example from the erlang shell:</p>
+<blockquote>
+<p>c(airbag_eqc).<br />airbag_eqc:test(1000).</p>
+</blockquote>
+<p>You should see lots of dots and explosion commands printed. In order to switch the E2E-library on and off, change the following define in <em>airbag_eqc.erl</em>:</p>
+<blockquote>
+<p>-define(USE_E2E, yes).</p>
+</blockquote>
+<p>When the E2E-library is not used, a large enough number of tests should reveal a failing test case or two.</p>
+<h1 id="generation-code-coverage-information">Generation code coverage information</h1>
+<p>The <em>gen_coverage</em> script in the example can be used to generate coverage information in the <em>Coverage</em> directory. This can only be done after the experiment has been run.</p>
+<h1 id="testing-faultcheck">Testing FaultCheck</h1>
+<p>There are some property-based tests that can be used to verify that FaultCheck works as intended. These tests are implemented in ScalaCheck. When new features are added to FaultCheck, these tests should be updated and/or re-run. Currently, there are two different tests: one for the probing-part of FaultCheck and one for the packet-based communication channel of FaultCheck. For these tests to work, everything has to be built and the environment has to be set up as described above.</p>
+<h2 id="testing-the-probing-part">Testing the probing part</h2>
+<p>Go to <em>Tests/General</em> and run the test with</p>
+<blockquote>
+<p>sbt run</p>
+</blockquote>
+<p>All the tests should pass.</p>
+<h2 id="testing-the-communication-channel">Testing the communication channel</h2>
+<p>Go to <em>Tests/Packet</em> and run the test with</p>
+<blockquote>
+<p>sbt run</p>
+</blockquote>
+<p>All the tests should pass.</p>
+<h1 id="generating-documentation">Generating documentation</h1>
+<p>Currently, this tutorial is written with the markdown syntax in the <em>README.md</em> file and the files in the Documentation directory are generated with the <em>build_doc</em> script. To update the documentation, edit the <em>README.md</em> file and run the script:</p>
+<blockquote>
+<p>./build_doc</p>
+</blockquote>
+<p>Make sure that the dependencies for this script are installed as described above.</p>

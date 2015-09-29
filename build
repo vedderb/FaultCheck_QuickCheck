@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# FaultCheck
+cd FaultCheck
+qmake
+make
+cd ..
+
+# The E2E_Scala example
+cd Examples/E2E_Scala/Application
+make
+cd ../../..
+
+# The AUTOSAR_E2E_QuickCheck Example
+if [ -d "Examples/AUTOSAR_E2E_QuickCheck" ]; then
+cd Examples/AUTOSAR_E2E_QuickCheck
+./build_all
+cd ../..
+else
+echo "The AUTOSAR example is not present."
+fi
+

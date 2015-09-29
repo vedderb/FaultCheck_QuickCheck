@@ -1,0 +1,10 @@
+#!/bin/bash
+
+cd Examples/E2E_Scala/scala
+sbt clean
+cd ../../../Tests/General
+sbt clean
+cd ../Packet
+sbt clean
+cd ../../
+

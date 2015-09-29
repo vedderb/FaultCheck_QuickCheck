@@ -1,0 +1,8 @@
+#!/bin/bash
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+pandoc -f markdown -t latex README.md -o $DIR"/Documentation/description.tex"
+pandoc -f markdown -t html README.md -o $DIR"/Documentation/description.html"
+pandoc -f markdown README.md -o $DIR"/Documentation/description.pdf"
+

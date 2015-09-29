@@ -1,0 +1,11 @@
+#!/bin/bash
+
+rm -R Coverage/*
+lcov --capture --directory . --output-file Coverage/coverage.info --no-external --rc lcov_branch_coverage=1
+genhtml -o Coverage/HTML Coverage/coverage.info -t 'E2E test coverage' -f -s --branch-coverage --legend
+gentex -o Coverage/TEX Coverage/coverage.info -t 'E2E test coverage' -f -s --branch-coverage --legend
+
+# Remove the old files for the next run
+rm -f *.gcda
+rm -f E2E/*.gcda
+

@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# FaultCheck
+cd FaultCheck
+make clean
+rm -Rf *.so*
+cd ..
+
+# The E2E_Scala example
+cd Examples/E2E_Scala/Application
+make clean
+cd ..
+./clean_coverage
+cd ../..
+
+# The AUTOSAR_E2E_QuickCheck Example
+if [ -d "Examples/AUTOSAR_E2E_QuickCheck" ]; then
+cd Examples/AUTOSAR_E2E_QuickCheck
+./clean_all
+cd ../..
+else
+echo "The AUTOSAR example is not present."
+fi
+

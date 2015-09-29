@@ -1,0 +1,6 @@
+#!/bin/bash
+
+cd E2E
+make
+cd ..
+

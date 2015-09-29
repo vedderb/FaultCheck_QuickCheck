@@ -1,0 +1,11 @@
+#!/bin/bash
+
+./clean_coverage
+cd E2E
+make clean
+cd ..
+rm -f *.beam
+rm -f *.hrl
+rm -f .eqc-info
+rm -f *.gcno
+
